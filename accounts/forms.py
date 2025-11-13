@@ -4,9 +4,18 @@ from .models import Driver as CustomUser
 class CustomUserCreationForm(UserCreationForm):
     class Meta:
         model = CustomUser
-        fields = UserCreationForm.Meta.fields + ("employee_id", "location")
-
+        fields = (
+            "username",
+            "email",
+            "employee_id",
+            "location",
+        ) # new
 class CustomUserChangeForm(UserChangeForm):
     class Meta:
         model = CustomUser
-        fields = UserChangeForm.Meta.fields
+        fields = (
+            "username",
+            "email",
+            "employee_id",
+            "location",
+) # new
