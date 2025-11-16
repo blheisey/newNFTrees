@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "debug_toolbar",
     "accounts", # new 
     "pages", # new
 
@@ -51,6 +52,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 ROOT_URLCONF = "django_project.urls"
@@ -130,3 +132,6 @@ AUTH_USER_MODEL = "accounts.Driver" # new
 LOGIN_REDIRECT_URL = "home" # new
 LOGOUT_REDIRECT_URL = "home" # new
 
+INTERNAL_IPS = [
+    "127.0.0.1",
+]

@@ -18,6 +18,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include # new
 from django.views.generic.base import TemplateView # new
+from debug_toolbar.toolbar import debug_toolbar_urls
 
 urlpatterns = [
 path("admin/", admin.site.urls),
@@ -26,5 +27,5 @@ path("accounts/", include("django.contrib.auth.urls")), # new
 path("", TemplateView.as_view(template_name="home.html"),
 name="home"), # new
 path("", include("pages.urls")), # new
-]
+] + debug_toolbar_urls()
 
