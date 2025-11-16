@@ -1,17 +1,39 @@
 {% extends "base.html" %}
 {% block title %}Home{% endblock title %}
+
 {% block content %}
-{% if user.is_authenticated %}
-<!-- new code here! -->
-Hi {{ user.username }}! You're employee ID is {{ user.employee_id }} and your location is {{ user.location }}.
-<!-- end of new code -->
-<form action="{% url 'logout' %}" method="post">
-{% csrf_token %}
-<button type="submit">Log Out</button>
-</form>
-{% else %}
-<p>You are not logged in</p>
-<a href="{% url 'login' %}">Log In</a> |
-<a href="{% url 'signup' %}">Sign Up</a>
-{% endif %}
+<div class="container py-5">
+
+    {% if user.is_authenticated %}
+
+        <div class="mb-4 p-4 bg-body-tertiary rounded-4 shadow-sm">
+            <h2 class="fw-bold mb-3">Welcome, {{ user.username }}!</h2>
+
+            <p class="fs-5 text-secondary">
+                Employee ID: <span class="fw-semibold text-dark">{{ user.employee_id }}</span><br>
+                Location: <span class="fw-semibold text-dark">{{ user.location }}</span>
+            </p>
+
+            <form action="{% url 'logout' %}" method="post" class="mt-4">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger btn-lg">
+                    Log Out
+                </button>
+            </form>
+        </div>
+
+    {% else %}
+
+        <div class="p-4 bg-body-tertiary rounded-4 shadow-sm">
+            <p class="fs-4 text-dark mb-3">You are not logged in.</p>
+
+            <div class="d-flex gap-3">
+                <a href="{% url 'login' %}" class="btn btn-primary btn-lg">Log In</a>
+                <a href="{% url 'signup' %}" class="btn btn-outline-secondary btn-lg">Sign Up</a>
+            </div>
+        </div>
+
+    {% endif %}
+
+</div>
 {% endblock content %}
