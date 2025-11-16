@@ -1,0 +1,54 @@
+{% extends "accounts/base.html" %}
+{% load cart_extras %}
+{% block title %}Your Cart{% endblock title %}
+
+{% block content %}
+<div class="container py-5">
+    <h1 class="fw-bold mb-4">Shopping Cart</h1>
+
+    {% if cart_items %}
+    <div class="shadow-sm rounded-4 bg-white p-4">
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Subtotal</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart_items %}
+                <tr>
+                    <td>{{ item.product.name }}</td>
+                    <td>${{ item.product.price }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>${{ item.quantity|multiply:item.product.price }}</td>
+                    <td>
+                        <!-- Optional remove button -->
+                        <a href="#" class="btn btn-sm btn-outline-danger">Remove</a>
+                    </td>
+                </tr>
+                {% endfor %}
+                <tr>
+                    <td colspan="3" class="text-end fw-bold">Total:</td>
+                    <td colspan="2" class="fw-bold">
+                        ${{ cart_items|sum_total }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="mt-4 d-flex justify-content-end">
+            <a href="#" class="btn btn-primary btn-lg">Proceed to Checkout</a>
+        </div>
+    </div>
+    {% else %}
+    <div class="p-4 bg-body-tertiary rounded-4 shadow-sm">
+        <p class="fs-4 text-dark mb-3">Your cart is empty.</p>
+        <a href="{% url 'product_list' %}" class="btn btn-primary btn-lg">Browse Products</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock content %}

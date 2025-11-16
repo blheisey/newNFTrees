@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "accounts", # new 
     "pages", # new
+    "shop"
 
 
 ]
@@ -128,5 +129,9 @@ STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "accounts.Driver" # new 
 LOGIN_REDIRECT_URL = "home" # new
-LOGOUT_REDIRECT_URL = "home" # new
+LOGOUT_REDIRECT_URL = "home" # new 
+# Media files (uploaded by users/products)
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
+
 
