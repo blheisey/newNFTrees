@@ -18,8 +18,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include # new
 from django.views.generic.base import TemplateView # new
+<<<<<<< HEAD
 from django.conf import settings
 from django.conf.urls.static import static 
+=======
+from debug_toolbar.toolbar import debug_toolbar_urls
+>>>>>>> 6948120227e20c76cd582081d7fa9a8d01cd5c88
 
 urlpatterns = [
 path("admin/", admin.site.urls),
@@ -28,10 +32,14 @@ path("accounts/", include("django.contrib.auth.urls")), # new
 path("", TemplateView.as_view(template_name="home.html"),
 name="home"), # new
 path("", include("pages.urls")), # new
+<<<<<<< HEAD
 path('shop/', include('shop.urls')),
 
 ] 
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+=======
+] + debug_toolbar_urls()
+>>>>>>> 6948120227e20c76cd582081d7fa9a8d01cd5c88
 
