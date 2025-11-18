@@ -8,6 +8,7 @@
 
         <div class="mb-4 p-4 bg-body-tertiary rounded-4 shadow-sm">
             <h2 class="fw-bold mb-3">Welcome, {{ user.username }}!</h2>
+            <a href="{% url 'customer_change' %}" class="btn btn-outline-secondary btn-lg">customer_change_form</a>
 
             <p class="fs-5 text-secondary">
                 Employee ID: <span class="fw-semibold text-dark">{{ user.employee_id }}</span><br>

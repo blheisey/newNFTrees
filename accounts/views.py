@@ -2,6 +2,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView
 from .forms import CustomUserCreationForm, CustomerSignUpForm
 from django.shortcuts import render, redirect
+from .forms import CustomerChangeForm
 
 class EmployeeSignUpView(CreateView):
     form_class = CustomUserCreationForm
@@ -19,3 +20,16 @@ def customer_signup(request):
         form = CustomerSignUpForm()
 
     return render(request, "registration/signup.html", {"form": form})
+
+
+
+def edit_customer_profile(request):
+    if request.method == "POST":
+        form = CustomerChangeForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect("profile")  # redirect to profile page
+    else:
+        form = CustomerChangeForm(instance=request.user)
+
+    return render(request, "accounts/edit_customer.html", {"form": form})
