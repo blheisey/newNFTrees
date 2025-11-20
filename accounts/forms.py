@@ -1,89 +1,109 @@
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django import forms
 from django.contrib.auth import get_user_model
-from .models import Driver as CustomUser
-from .models import Customer
-import random
+from .models import Customer, DriverProfile
 
-class CustomUserCreationForm(UserCreationForm):
+User = get_user_model()   # always use this
+
+
+# ====================================================
+# DRIVER CREATION FORM (Creates User + DriverProfile)
+# ====================================================
+class DriverCreationForm(UserCreationForm):
+    location = forms.CharField(required=False)
+
+    class Meta(UserCreationForm.Meta):
+        model = User
+        fields = ("username", "email")
+
+    def save(self, commit=True):
+        user = super().save(commit=commit)
+        user.is_driver = True
+        if commit:
+            user.save()
+
+        # Create the driver profile
+        DriverProfile.objects.create(
+            user=user,
+            location=self.cleaned_data.get("location"),
+        )
+
+        return user
+
+
+
+# ====================================================
+# DRIVER CHANGE FORM (admin editing)
+# ====================================================
+class DriverChangeForm(UserChangeForm):
     class Meta:
-        model = CustomUser
-        fields = (
-            "username",
-            "email",
-            "employee_id",
-            "location",
-        ) # new
-
-class CustomUserChangeForm(UserChangeForm):
-    class Meta:
-        model = CustomUser
-        fields = (
-            "username",
-            "email",
-            "employee_id",
-            "location",
-) # new
-        
+        model = User   # wrong before: you used DriverProfile
+        fields = ("username", "email", "is_driver", "is_customer")
 
 
-User = get_user_model()   # always use this, respects AUTH_USER_MODEL
-
-
+# ====================================================
+# CUSTOMER SIGNUP FORM (Creates User + Customer)
+# ====================================================
 class CustomerSignUpForm(UserCreationForm):
     phone_number = forms.CharField(required=False)
     shipping_address = forms.CharField(widget=forms.Textarea, required=False)
 
     class Meta(UserCreationForm.Meta):
         model = User
-        fields = ("username", "email", "employee_id")  # fields for the User table
-        
+        fields = ("username", "email")
 
     def save(self, commit=True):
-        # Create User first
         user = super().save(commit=commit)
+        user.is_customer = True
+        if commit:
+            user.save()
 
-        # Create Customer profile
         Customer.objects.create(
             user=user,
             phone_number=self.cleaned_data.get("phone_number"),
             shipping_address=self.cleaned_data.get("shipping_address"),
         )
-    
+
         return user
-    
 
 
+
+# ====================================================
+# CUSTOMER CHANGE FORM (editing user + profile)
+# ====================================================
 class CustomerChangeForm(UserChangeForm):
     phone_number = forms.CharField(required=False)
     shipping_address = forms.CharField(widget=forms.Textarea, required=False)
 
     class Meta:
-        model = User  # This edits the User instance
-        fields = ("username", "email", "first_name", "last_name")  # User fields
+        model = User
+        fields = ("username", "email", "first_name", "last_name")
 
     def __init__(self, *args, **kwargs):
-        # Expect a `user` keyword argument to pre-fill Customer fields
-        self.user_instance = kwargs.pop("instance", None)
-        super().__init__(*args, instance=self.user_instance, **kwargs)
+        user = kwargs.get("instance")
+        super().__init__(*args, **kwargs)
 
-        if self.user_instance:
+        if user:
             try:
-                customer_profile = self.user_instance.customer
-                self.fields["phone_number"].initial = customer_profile.phone_number
-                self.fields["shipping_address"].initial = customer_profile.shipping_address
+                customer = user.customer
+                self.fields["phone_number"].initial = customer.phone_number
+                self.fields["shipping_address"].initial = customer.shipping_address
             except Customer.DoesNotExist:
                 pass
-            
+
     def save(self, commit=True):
-        # Save the User fields
+        # Save user fields
         user = super().save(commit=commit)
 
-        # Save or create the Customer profile
-        customer_data = {
-            "phone_number": self.cleaned_data.get("phone_number"),
-            "shipping_address": self.cleaned_data.get("shipping_address"),
-        }
-        Customer.objects.update_or_create(user=user, defaults=customer_data)
+        # Save customer profile fields
+        Customer.objects.update_or_create(
+            user=user,
+            defaults={
+                "phone_number": self.cleaned_data.get("phone_number"),
+                "shipping_address": self.cleaned_data.get("shipping_address"),
+            }
+        )
 
         return user
+
+    

@@ -1,14 +1,14 @@
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
-from .forms import CustomUserCreationForm, CustomerSignUpForm
+from .forms import DriverCreationForm, CustomerSignUpForm
 from django.shortcuts import render, redirect
 from .forms import CustomerChangeForm
 
 class EmployeeSignUpView(CreateView):
-    form_class = CustomUserCreationForm
+    form_class = DriverCreationForm
     success_url = reverse_lazy("login")
     template_name = "registration/employee_signup.html"
-
+    
 
 def customer_signup(request):
     if request.method == "POST":
