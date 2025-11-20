@@ -39,3 +39,11 @@ def add_to_cart(request, product_id):
     item.save()
     return redirect(request.META.get('HTTP_REFERER', '/shop/products/'))
 
+def remove_from_cart(request, product_id):
+    cart = Cart.objects.filter(customer=request.user.customer).first()
+    if cart:
+        item = CartItem.objects.filter(cart=cart, product_id=product_id).first()
+        if item:
+            item.delete()
+    return redirect(request.META.get('HTTP_REFERER', '/shop/cart/'))
+
