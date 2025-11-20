@@ -1,9 +1,25 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Product, Cart, CartItem
 
+from django.shortcuts import render
+from .models import Product
+
 def product_list(request):
-    products = Product.objects.all()
-    return render(request, 'shop/products.html', {'products': products})
+    # get the category from URL query parameter
+    category = request.GET.get('category')
+    
+    if category:
+        products = Product.objects.filter(category=category)
+    else:
+        products = Product.objects.all()
+    
+    # pass the distinct categories for the navbar
+    nav_categories = Product.objects.values_list('category', flat=True).distinct()
+    
+    return render(request, 'shop/products.html', {
+        'products': products,
+        'nav_categories': nav_categories
+    }) 
 
 def product_detail(request, pk):
     product = get_object_or_404(Product, pk=pk)

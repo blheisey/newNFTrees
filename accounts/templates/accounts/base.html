@@ -49,20 +49,28 @@
           <a class="nav-link" href="#">Employee</a> <!--replace this hyperlink -->
         </li>
 
-        <!-- Products dropdown -->
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="productsDropdown"
-             role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Products
-          </a>
+       <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" role="button" 
+       data-bs-toggle="dropdown" aria-expanded="false">
+        Products
+    </a>
+    <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="{% url 'shop:product_list' %}">All Products</a></li>
+        <li><hr class="dropdown-divider"></li>
 
-          <ul class="dropdown-menu" aria-labelledby="productsDropdown">
-            <li><a class="dropdown-item" href="#">Trees</a></li> <!--replace with Trees hyperlink-->
-            <li><a class="dropdown-item" href="#">Decor</a></li> <!--replace with Decor hyperlink-->
-            <li><a class="dropdown-item" href="#">NFTrees</a></li> <!--replace with NFtree hyperlink-->
-          </ul>
-        </li>
-      </ul>
+       <!-- Dynamically render categories -->
+<!-- Dynamically render categories -->
+{% for cat in nav_categories %}
+<li>
+  <a class="dropdown-item" href="{% url 'shop:product_list' %}?category={{ cat }}">
+    {{ cat|title }}
+  </a>
+</li>
+{% endfor %}
+
+
+    </ul>
+</li>
 
       <!-- Login / Signup (right side) -->
       <ul class="navbar-nav ms-auto">
