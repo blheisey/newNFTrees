@@ -32,6 +32,7 @@ urlpatterns = [
 
     # Home page: product list
     path("", ProductListView, name="home"),
+    
 
     path("shop/", include("shop.urls")),
     path("__debug__/", include(debug_toolbar.urls)),
