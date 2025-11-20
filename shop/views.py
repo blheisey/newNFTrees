@@ -1,5 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Product, Cart, CartItem
+from .models import Product, Cart, CartItem 
+from django.views.decorators.http import require_POST
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+
 
 from django.shortcuts import render
 from .models import Product
@@ -46,4 +50,20 @@ def remove_from_cart(request, product_id):
         if item:
             item.delete()
     return redirect(request.META.get('HTTP_REFERER', '/shop/cart/'))
+
+@require_POST
+def update_cart_item(request, product_id):
+    new_qty = int(request.POST.get('quantity', 1))
+    product = get_object_or_404(Product, id=product_id)
+    cart, _ = Cart.objects.get_or_create(customer=request.user.customer)
+    item, created = CartItem.objects.get_or_create(cart=cart, product=product)
+    
+    if new_qty > 0:
+        item.quantity = new_qty
+        item.save()
+    else:
+        item.delete()  # remove item if quantity set to 0
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', reverse('shop:cart')))
+
 
