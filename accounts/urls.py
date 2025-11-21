@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import customer_signup, EmployeeSignUpView, CustomerChangeForm
+from .views import customer_signup, EmployeeSignUpView, edit_customer_profile, edit_driver_profile
 
 
 
@@ -7,5 +7,6 @@ from .views import customer_signup, EmployeeSignUpView, CustomerChangeForm
 urlpatterns = [
     path("signup/", customer_signup, name="signup"),
     path("employee_signup/", EmployeeSignUpView.as_view(), name="employee_signup"),
-    path("customer_change/", CustomerChangeForm,  name = "customer_change"),
+    path("customer_change/", edit_customer_profile,  name = "customer_change"),
+    path("driver_change/", edit_driver_profile,  name = "driver_change"),
 ]
