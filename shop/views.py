@@ -41,7 +41,7 @@ def add_to_cart(request, product_id):
     if not created:
         item.quantity += 1
     item.save()
-    return redirect(request.META.get('HTTP_REFERER', '/shop/products/'))
+    return redirect(request.META.get('HTTP_REFERER', '')) # Previously: /shop/products/ This path does not exist
 
 def remove_from_cart(request, product_id):
     cart = Cart.objects.filter(customer=request.user.customer).first()
