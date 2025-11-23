@@ -43,6 +43,6 @@ def edit_driver_profile(request):
             form.save()
             return redirect("home")  # redirect to profile page
     else:
-        form = CustomerChangeForm(instance=request.user)
+        form = DriverChangeForm(instance=request.user)
 
     return render(request, "registration/driver_change.html", {"form": form})

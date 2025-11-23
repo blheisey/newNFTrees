@@ -36,9 +36,36 @@ class DriverCreationForm(UserCreationForm):
 # DRIVER CHANGE FORM (admin editing)
 # ====================================================
 class DriverChangeForm(UserChangeForm):
+    location = forms.CharField(required=False)
+
     class Meta:
-        model = User   # wrong before: you used DriverProfile
-        fields = ("username", "email", "is_driver", "is_customer")
+        model = User
+        fields = ("username", "email", "first_name", "last_name")
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.get("instance")
+        super().__init__(*args, **kwargs)
+
+        if user:
+            try:
+                DriverProfile = user.driverprofile
+                self.fields["location"].initial = DriverProfile.location
+            except DriverProfile.DoesNotExist:
+                pass
+
+    def save(self, commit=True):
+        # Save user fields
+        user = super().save(commit=commit)
+
+        # Save customer profile fields
+        DriverProfile.objects.update_or_create(
+            user=user,
+            defaults={
+                "location": self.cleaned_data.get("location"),
+            }
+        )
+
+        return user
 
 
 # ====================================================
