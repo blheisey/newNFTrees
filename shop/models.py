@@ -5,7 +5,7 @@ from accounts.models import Customer
 class Product(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField(blank=True)
-    category = models.CharField(max_length=50, choices=[('tree','Tree'), ('ornament','Ornament')])
+    category = models.CharField(max_length=50, choices=[('tree','Tree'), ('ornament','Ornament'), ('nft','NFT')])
     price = models.DecimalField(max_digits=10, decimal_places=2)
     inventory = models.PositiveIntegerField(default=0)
     image = models.ImageField(upload_to='products/', blank=True)

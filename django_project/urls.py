@@ -16,22 +16,30 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path, include # new
-from django.views.generic.base import TemplateView # new
+from django.urls import path, include
+from django.views.generic.base import TemplateView
 from django.conf import settings
-from django.conf.urls.static import static 
+from django.conf.urls.static import static
+from shop.views import product_list as ProductListView
+
+
+import debug_toolbar
 
 urlpatterns = [
-path("admin/", admin.site.urls),
-path("accounts/", include("accounts.urls")), # new
-path("accounts/", include("django.contrib.auth.urls")), # new
-path("", TemplateView.as_view(template_name="home.html"),
-name="home"), # new
-path("", include("pages.urls")), # new
-path('shop/', include('shop.urls')),
+    path("admin/", admin.site.urls),
+    path("accounts/", include("accounts.urls")),
+    path("accounts/", include("django.contrib.auth.urls")),
 
-] 
+    # Home page: product list
+    path("", ProductListView, name="home"),
+    
+
+    path("shop/", include("shop.urls")),
+    path("__debug__/", include(debug_toolbar.urls)),
+    path("pages/", include("pages.urls")),
+
+]
+
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-

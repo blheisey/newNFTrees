@@ -23,11 +23,27 @@
                 <tr>
                     <td>{{ item.product.name }}</td>
                     <td>${{ item.product.price }}</td>
-                    <td>{{ item.quantity }}</td>
+                    <td>
+  <form method="POST" action="{% url 'shop:update_cart_item' item.product.id %}" class="d-flex align-items-center">
+    {% csrf_token %}
+    <div class="input-group input-group-sm" style="width: 120px;">
+     
+      <!-- Quantity input -->
+<input type="number" name="quantity" value="{{ item.quantity }}" min="0" class="form-control text-center" style="width: 50px;" onchange="this.form.submit()">
+
+      
+    </div>
+
+   
+  </form>
+</td>
+
                     <td>${{ item.quantity|multiply:item.product.price }}</td>
                     <td>
                         <!-- Optional remove button -->
-                        <a href="#" class="btn btn-sm btn-outline-danger">Remove</a>
+<a href="{% url 'shop:remove_from_cart' item.product.id %}" class="btn btn-sm btn-outline-danger">
+    Remove All
+</a>
                     </td>
                 </tr>
                 {% endfor %}
@@ -47,8 +63,37 @@
     {% else %}
     <div class="p-4 bg-body-tertiary rounded-4 shadow-sm">
         <p class="fs-4 text-dark mb-3">Your cart is empty.</p>
-        <a href="{% url 'product_list' %}" class="btn btn-primary btn-lg">Browse Products</a>
+        <a href="{% url 'shop:product_list' %}" class="btn btn-primary btn-lg">Browse Products</a>
     </div>
     {% endif %}
 </div>
+<style>
+    /* Make number input spinners always visible */
+input[type="number"] {
+    padding-right: 0.6rem;  
+    min-width: 70px;    
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+}
+
+/* Ensure Chrome always shows spinner */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    opacity: 1; 
+    display: block;
+}
+
+</style>
 {% endblock content %}
+
+<!-- <script>
+function changeQty(button, delta) {
+    const input = button.parentElement.querySelector('input[name="quantity"]');
+    let current = parseInt(input.value) || 0;
+    let newVal = current + delta;
+    if (newVal < 0) newVal = 0;
+    input.value = newVal;
+    input.form.submit();
+
+}
+</script> -->
