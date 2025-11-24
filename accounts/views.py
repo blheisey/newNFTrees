@@ -28,7 +28,7 @@ def edit_customer_profile(request):
         form = CustomerChangeForm(request.POST, instance=request.user)
         if form.is_valid():
             form.save()
-            return redirect("home")  # redirect to profile page
+            return redirect("shop:product_list")  # redirect to profile page
     else:
         form = CustomerChangeForm(instance=request.user)
 
@@ -41,8 +41,15 @@ def edit_driver_profile(request):
         form = DriverChangeForm(request.POST, instance=request.user)
         if form.is_valid():
             form.save()
-            return redirect("home")  # redirect to profile page
+            return redirect("shop:product_list")  # redirect to profile page
     else:
         form = DriverChangeForm(instance=request.user)
 
     return render(request, "registration/driver_change.html", {"form": form})
+
+def employee_portal(request):
+    """
+    Public employee landing page.
+    Shows different options depending on whether the user is a logged-in driver.
+    """
+    return render(request, "employee_portal.html")

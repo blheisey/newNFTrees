@@ -1,0 +1,38 @@
+{% extends "accounts/base.html" %}
+{% load static %}
+
+{% block title %}Employee Portal{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="fw-bold">Employee Portal</h1>
+
+        {% if user.is_authenticated and user.is_driver %}
+            <!-- Logged-in Employee buttons -->
+            <div class="d-flex gap-3">
+                <a href="{% url 'driver_change' %}" class="btn btn-outline-primary">
+                    Edit Profile
+                </a>
+                <a href="{% url 'logout' %}" class="btn btn-danger">
+                    Logout
+                </a>
+            </div>
+        {% else %}
+            <!-- Logged-out Employee buttons -->
+            <div class="d-flex gap-3">
+                <a href="{% url 'employee_signup' %}" class="btn btn-success">
+                    Employee Sign Up
+                </a>
+                <a href="{% url 'login' %}" class="btn btn-primary">
+                    Employee Login
+                </a>
+            </div>
+        {% endif %}
+    </div>
+
+    <p class="text-secondary fs-5">
+        Welcome to the employee dashboard. Please log in or create an account to access driver features.
+    </p>
+</div>
+{% endblock %}
