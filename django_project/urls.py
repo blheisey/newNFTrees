@@ -21,14 +21,16 @@ from django.views.generic.base import TemplateView
 from django.conf import settings
 from django.conf.urls.static import static
 from shop.views import product_list as ProductListView
+from django.contrib.auth.views import LogoutView
 
 
 import debug_toolbar
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("accounts/", include("accounts.urls")),
     path("accounts/", include("django.contrib.auth.urls")),
+    path("accounts/", include("accounts.urls")),
+
 
     # Home page: product list
     path("", ProductListView, name="home"),

@@ -4,15 +4,20 @@
 {% block content %}
 <div class="container py-5">
 
-    {% if user.is_authenticated %}
+    {% if user.is_authenticated%}
 
         <div class="mb-4 p-4 bg-body-tertiary rounded-4 shadow-sm">
             <h2 class="fw-bold mb-3">Welcome, {{ user.username }}!</h2>
+            <a href="{% url 'customer_change' %}" class="btn btn-outline-secondary btn-lg">customer change form</a>
+            <a href="{% url 'driver_change' %}" class="btn btn-outline-secondary btn-lg">driver change form</a>
 
-            <p class="fs-5 text-secondary">
-                Employee ID: <span class="fw-semibold text-dark">{{ user.employee_id }}</span><br>
-                Location: <span class="fw-semibold text-dark">{{ user.location }}</span>
-            </p>
+            {% if user.is_driver == True %}
+                <p class="fs-5 text-secondary">
+                    Employee ID: <span class="fw-semibold text-dark">{{ user.driverprofile.employee_id }}</span><br>
+                    Location: <span class="fw-semibold text-dark">{{ user.driverprofile.location }}</span>
+                </p>
+
+            {% endif %}
 
             <form action="{% url 'logout' %}" method="post" class="mt-4">
                 {% csrf_token %}
@@ -30,6 +35,7 @@
             <div class="d-flex gap-3">
                 <a href="{% url 'login' %}" class="btn btn-primary btn-lg">Log In</a>
                 <a href="{% url 'signup' %}" class="btn btn-outline-secondary btn-lg">Sign Up</a>
+                <a href="{% url 'employee_signup' %}" class="btn btn-outline-secondary btn-lg">Employee Sign Up</a>
             </div>
         </div>
 

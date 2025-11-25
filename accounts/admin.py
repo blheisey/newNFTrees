@@ -1,28 +1,31 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .forms import CustomUserCreationForm, CustomUserChangeForm
-from .models import Driver as CustomUser
-from .models import Customer
+from .models import User, DriverProfile, Customer
+from .forms import DriverCreationForm, DriverChangeForm
+
 
 class CustomUserAdmin(UserAdmin):
-    add_form = CustomUserCreationForm
-    form = CustomUserChangeForm
-    model = CustomUser
-    list_display = [
-        "email",
-        "username",
-        "employee_id",
-        "location",
-    ]
+    add_form = DriverCreationForm
+    form = DriverChangeForm
+    model = User
 
-    # 👇 these must be inside the class!
+    list_display = ("email", "username", "is_driver", "is_customer", "is_staff")
+    list_filter = ("is_driver", "is_customer", "is_staff", "is_superuser")
+
     fieldsets = UserAdmin.fieldsets + (
-        (None, {"fields": ("employee_id", "location")}),
+        ("Roles", {"fields": ("is_driver", "is_customer")}),
     )
 
     add_fieldsets = UserAdmin.add_fieldsets + (
-        (None, {"fields": ("employee_id", "location")}),
+        ("Roles", {"fields": ("is_driver", "is_customer")}),
     )
 
-admin.site.register(CustomUser, CustomUserAdmin)
+
+admin.site.register(User, CustomUserAdmin)
+
+
+class DriverProfileAdmin(admin.ModelAdmin):
+    list_display = ("user", "employee_id", "location")
+
+admin.site.register(DriverProfile, DriverProfileAdmin)
 admin.site.register(Customer)
