@@ -19,8 +19,8 @@
             <p class="fs-4 fw-bold mb-4">${{ product.price }}</p>
             <p class="mb-4">{{ product.description }}</p>
 
-            {% if user.is_authenticated %}
-            <a href="{% url 'add_to_cart' product.id %}" class="btn btn-success btn-lg">Add to Cart</a>
+            {% if user.is_authenticated and user.is_customer%}
+            <a href="{% url 'shop:add_to_cart' product.id %}" class="btn btn-success btn-lg">Add to Cart</a>
             {% else %}
             <a href="{% url 'login' %}" class="btn btn-success btn-lg">Login to Buy</a>
             {% endif %}
