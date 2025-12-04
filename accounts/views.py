@@ -3,6 +3,7 @@ from django.views.generic import CreateView
 from .forms import DriverCreationForm, CustomerSignUpForm
 from django.shortcuts import render, redirect
 from .forms import CustomerChangeForm, DriverChangeForm
+from django.contrib.auth.decorators import login_required
 
 class EmployeeSignUpView(CreateView):
     form_class = DriverCreationForm
@@ -22,7 +23,7 @@ def customer_signup(request):
     return render(request, "registration/signup.html", {"form": form})
 
 
-
+@login_required
 def edit_customer_profile(request):
     if request.method == "POST":
         form = CustomerChangeForm(request.POST, instance=request.user)
@@ -35,7 +36,7 @@ def edit_customer_profile(request):
     return render(request, "registration/customer_change_form.html", {"form": form})
 
 
-
+@login_required
 def edit_driver_profile(request):
     if request.method == "POST":
         form = DriverChangeForm(request.POST, instance=request.user)
