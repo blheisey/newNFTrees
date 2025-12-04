@@ -16,3 +16,4 @@ urlpatterns = [
     path('cart/checkout/', views.CreateCheckoutSessionView, name='checkout'),
 
 ]
+

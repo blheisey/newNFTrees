@@ -10,7 +10,7 @@
     <div class="row row-cols-1 row-cols-md-3 g-4">
         {% for product in products %}
         <div class="col">
-            <div class="card h-100 shadow-sm rounded-4">
+<div class="card h-100 shadow-lg rounded-4 border-0">
                 {% if product.image %}
                 <img src="{{ product.image.url }}" class="card-img-top rounded-top-4" alt="{{ product.name }}">
                 {% else %}
