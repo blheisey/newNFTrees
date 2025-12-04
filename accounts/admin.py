@@ -1,7 +1,8 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import User, DriverProfile, Customer
-from .forms import DriverCreationForm, DriverChangeForm
+
+from .forms import DriverChangeForm, DriverCreationForm
+from .models import Customer, DriverProfile, User
 
 
 class CustomUserAdmin(UserAdmin):
