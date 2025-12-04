@@ -10,6 +10,9 @@ class Product(models.Model):
     inventory = models.PositiveIntegerField(default=0)
     image = models.ImageField(upload_to='products/', blank=True)
 
+    def __str__(self):
+        return self.name
+
 
 class Cart(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
