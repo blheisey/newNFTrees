@@ -89,7 +89,6 @@
             {% csrf_token %}
             <button type="submit" class="btn btn-link">Logout</button>
           </form>
-
         </li>
 
         {% else %}
@@ -119,6 +118,10 @@
     <!-- NEW: Employee Portal Link -->
     <a href="{% url 'employee_portal' %}" class="text-white text-decoration-none">
       Employee Portal
+    </a>
+
+    <a class="navbar-brand" href="{% url 'admin:index' %}">
+      Admin Portal
     </a>
 
     <span>© 2025 NFTrees — All rights reserved.</span>
