@@ -14,7 +14,8 @@ class Migration(migrations.Migration):
             model_name="product",
             name="category",
             field=models.CharField(
-                choices=[("tree", "Tree"), ("ornament", "Ornament"), ("nft", "NFT")],
+                choices=[("tree", "Tree"), ("ornament", "Ornament"), ("nft"
+                , "NFT")],
                 max_length=50,
             ),
         ),

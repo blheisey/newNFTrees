@@ -20,7 +20,21 @@
             <p class="mb-4">{{ product.description }}</p>
 
             {% if user.is_authenticated %}
-            <a href="{% url 'add_to_cart' product.id %}" class="btn btn-success btn-lg">Add to Cart</a>
+                {% if product.category == 'nft' and user_owns_nft %}
+                    <!-- User already owns this NFT - show download option -->
+                    <div class="alert alert-success">
+                        <i class="fas fa-check-circle"></i> You own this NFT!
+                    </div>
+                    <a href="{% url 'shop:download_nft' product.id %}" class="btn btn-primary btn-lg me-2">
+                        <i class="fas fa-download"></i> Download High-Res
+                    </a>
+                    <a href="{% url 'shop:my_nfts' %}" class="btn btn-outline-primary btn-lg">
+                        View All My NFTs
+                    </a>
+                {% else %}
+                    <!-- User doesn't own this product - show purchase option -->
+                    <a href="{% url 'shop:add_to_cart' product.id %}" class="btn btn-success btn-lg">Add to Cart</a>
+                {% endif %}
             {% else %}
             <a href="{% url 'login' %}" class="btn btn-success btn-lg">Login to Buy</a>
             {% endif %}
