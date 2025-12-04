@@ -54,7 +54,11 @@ def add_to_cart(request, product_id):
     if not created:
         item.quantity += 1
     item.save()
-    return redirect(request.META.get('HTTP_REFERER', '/shop/products/'))
+     # safe redirect
+    referer = request.META.get('HTTP_REFERER')
+    if referer:
+        return redirect(referer)
+    return redirect('shop:product_list')
 
 def remove_from_cart(request, product_id):
     cart = Cart.objects.filter(customer=request.user.customer).first()
