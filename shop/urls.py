@@ -13,6 +13,6 @@ urlpatterns = [
     path('cart/update/<int:product_id>/', views.update_cart_item, name='update_cart_item'),
     path('nfts/', views.my_nfts, name='my_nfts'),  # User's purchased NFTs
     path('download/<int:product_id>/', views.download_nft_image, name='download_nft'),  # Secure download
-
+    path('checkout/<int:product_id>/', views.CreateCheckoutSessionView, name='checkout'),
 
 ]
