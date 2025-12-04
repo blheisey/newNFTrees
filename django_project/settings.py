@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -141,6 +142,28 @@ MEDIA_ROOT = BASE_DIR / "media"
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 
+# ============================
+# 🚀 EMAIL CONFIGURATION
+# ============================
+
+# Default sender email
+DEFAULT_FROM_EMAIL = "no-reply@example.com"
+
+# Use console backend during development (prints emails to terminal)
+if DEBUG:
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+else:
+    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+
+# SMTP Settings (fill these in when using real email service)
+EMAIL_HOST = os.environ.get("EMAIL_HOST", "smtp.gmail.com")  # Default to Gmail SMTP
+EMAIL_PORT = int(os.environ.get("EMAIL_PORT", 587))
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "owenwmiller8@gmail.com")       # your email
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "")  # your password / app key
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+
+# For providers like SendGrid, Mailgun, AWS SES: set host + credentials via environment variables
 
 
 

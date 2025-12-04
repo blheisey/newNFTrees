@@ -67,7 +67,7 @@
 
       <!-- Login / Signup (right side) -->
       <ul class="navbar-nav ms-auto">
-        {% if user.is_authenticated and user.is_customer %}
+        {% if user.is_authenticated  %}
         <li class="nav-item">
           <a class="nav-link" href="{% url 'shop:cart' %}">
             <i class="bi bi-cart3" style="font-size: 1.3rem;"></i>
@@ -77,12 +77,6 @@
 
         <li class="nav-item">
           <a class="nav-link" href="{% url 'customer_change' %}">Edit Profile</a>
-        </li>
-
-        <li class="nav-item">
-          <a href="{% url 'password_change' %}">Change Password</a>
-            <i class="bi bi-cart3" style="font-size: 1.3rem;"></i>
-          </a>
         </li>
 
         <li class="nav-item">

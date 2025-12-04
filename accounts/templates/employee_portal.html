@@ -21,11 +21,23 @@
         {% else %}
             <!-- Logged-out Employee buttons -->
             <div class="d-flex gap-3">
-                <a href="{% url 'employee_signup' %}" class="btn btn-success">
-                    Employee Sign Up
+
+                <a href="{% url 'password_change' %}" class="btn btn-success">
+                    password_change
                 </a>
+            
+                
                 <a href="{% url 'login' %}" class="btn btn-primary">
                     Employee Login
+                </a>
+            </div>
+        {% endif %}
+
+        {% if user.is_authenticated and user.is_superuser %}
+
+            <div class="d-flex gap-3">
+                <a href="{% url 'employee_signup' %}" class="btn btn-success">
+                    Employee Creation
                 </a>
             </div>
         {% endif %}
