@@ -31,7 +31,7 @@ def CreateCheckoutSessionView(request):
             {
                 "price_data": {
                     "currency": "usd",
-                    "unit_amount": item.product.price * 100,  # `price * 100`` is necessary here because Stripe assumes the price is in cents
+                    "unit_amount": int(item.product.price * 100),  # `price * 100`` is necessary here because Stripe assumes the price is in cents
                     "product_data": {
                         "name": item.product.name,
                         "images": [item.product.image],
