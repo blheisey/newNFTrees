@@ -10,6 +10,9 @@ class Product(models.Model):
     inventory = models.PositiveIntegerField(default=0)
     image = models.ImageField(upload_to='products/', blank=True)
 
+    def __str__(self):
+        return self.name
+
 def user_owns_nft(self, user):
     """Check if user has purchased this NFT"""
     if not user.is_authenticated or self.category != 'nft':
@@ -28,8 +31,7 @@ def user_owns_nft(self, user):
     ).exists()
 
 
-def __str__(self):
-    return self.name
+
 
 
 class Cart(models.Model):
