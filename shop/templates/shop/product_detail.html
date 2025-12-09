@@ -20,7 +20,7 @@
             <p class="mb-4">{{ product.description }}</p>
 
             {% if user.is_authenticated and user.is_customer%}
-                {% if product.category == 'nft' %}
+                {% if product.category == 'nft' and user_owns_nft %}
                     <!-- User already owns this NFT - show download option -->
                     <div class="alert alert-success">
                         <i class="fas fa-check-circle"></i> You own this NFT!
