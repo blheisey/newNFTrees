@@ -67,12 +67,21 @@
 
       <!-- Login / Signup (right side) -->
       <ul class="navbar-nav ms-auto">
-        {% if user.is_authenticated  %}
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'shop:cart' %}">
-            <i class="bi bi-cart3" style="font-size: 1.3rem;"></i>
-          </a>
-        </li>
+        {% if user.is_authenticated  and user.is_customer%}
+          <li class="nav-item position-relative">
+            <a class="nav-link" href="{% url 'shop:cart' %}">
+              <i class="bi bi-cart3" style="font-size: 1.3rem;"></i>
+            
+              {% if cart_count > 0 %}
+              <span
+                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                style="font-size: 0.7rem;"
+              >
+                {{ cart_count }}
+              </span>
+              {% endif %}
+            </a>
+          </li>
 
 
         <li class="nav-item">

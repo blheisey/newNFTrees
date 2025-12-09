@@ -8,7 +8,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.views.decorators.http import require_POST
 
-from .models import Cart, CartItem, OrderItem, Product
+from .models import Cart, CartItem, OrderItem, Product, Order
 
 import stripe
 
@@ -31,7 +31,7 @@ def CreateCheckoutSessionView(request):
             {
                 "price_data": {
                     "currency": "usd",
-                    "unit_amount": int(item.product.price * 100),  # `price * 100`` is necessary here because Stripe assumes the price is in cents
+                    "unit_amount": int(item.product.price * 100),  # `price * 100` is necessary here because Stripe assumes the price is in cents
                     "product_data": {
                         "name": item.product.name,
                         "images": [item.product.image],
@@ -46,12 +46,46 @@ def CreateCheckoutSessionView(request):
         line_items=line_items,
         metadata={"user_email": request.user.email},
         mode="payment",
-        success_url=YOUR_DOMAIN + f"/shop/", # this can be changed to any url
+        success_url=YOUR_DOMAIN + f"/shop/success/", # this can be changed to any url
         cancel_url=YOUR_DOMAIN + f"/shop/",
     )
 
     return redirect(checkout_session.url)
 
+@login_required
+def success_view(request):
+    #get the user's cart and its items
+    cart = Cart.objects.filter(customer=request.user.customer).first()  
+    items = cart.cartitem_set.all() if cart else [] 
+
+    #get the sum price of all of the items
+    sumPrice = 0
+    for item in items:
+        sumPrice += (item.product.price * item.quantity)
+
+    #create a new order
+    newOrder = Order.objects.create(customer=request.user.customer, total=sumPrice)
+
+    #create all order items and remove cart items
+    for item in items:
+        add_to_order(item, newOrder)
+        item.delete()
+    
+    #finally, display the page
+    return render(
+        request, 
+        "shop/success.html",
+    )
+
+def add_to_order(cartItem, order):
+    OrderItem.objects.get_or_create(
+        order = order,
+        product = cartItem.product,
+        product_name = cartItem.product.name,
+        price = cartItem.product.price,
+        quantity = cartItem.quantity,
+    )
+    
 
 def product_list(request):
     # get the category from URL query parameter

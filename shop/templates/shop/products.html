@@ -22,7 +22,7 @@
                     <p class="card-text fw-bold">${{ product.price }}</p>
                     <div class="mt-auto d-flex gap-2">
                         <a href="{% url 'shop:product_detail' product.pk %}" class="btn btn-outline-primary flex-fill">View Details</a>
-                        {% if user.is_authenticated %}
+                        {% if user.is_authenticated and user.is_customer%}
                         <a href="{% url 'shop:add_to_cart' product.id %}" class="btn btn-success flex-fill">Add to Cart</a>
                         {% else %}
                         <a href="{% url 'login' %}" class="btn btn-success flex-fill">Login to Buy</a>
